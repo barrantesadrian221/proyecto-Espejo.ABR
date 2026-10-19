@@ -19,19 +19,60 @@ const botonesFiltro = document.querySelectorAll('.btn-filtro');
 // 3. FUNCIÓN ASÍNCRONA (AJAX simulado): Debe ejecutarse al arrancar la web
 async function inicializarApp() {
   // TODO: Simular una espera de 1.5 segundos usando una Promesa (setTimeout)
+  await new Promise(resolve => setTimeout(resolve, 1500));
+  
   // TODO: Una vez pasada la espera, ocultar el div #loading-state
+  loadingState.style.display = 'none';
+  
   // TODO: Invocar a la función pintarTareas()
+  pintarTareas();
 }
 
 // 4. FUNCIÓN DE RENDERIZADO: Encargada de pintar los nodos en el HTML
 function pintarTareas() {
   // TODO: Limpiar el contenedor listaContenedor (innerHTML = '')
+  listaContenedor.innerHTML = "";
+
   // TODO: Filtrar el array 'tareas' según el 'filtroActual' usando .filter()
+  const tareasFiltradas = tareas.filter(tarea => {
+    if (filtroActual === 'Pendientes') return !tarea.completada;
+    if (filtroActual === 'Completadas') return tarea.completada;
+    return true; // 'Todas'
+  });
+
   // TODO: Recorrer el array filtrado y crear dinámicamente un elemento <li> por cada tarea
-  // TODO: Configurar las clases CSS según la prioridad y el estado (completada)
-  // TODO: Añadir un botón dentro de cada <li> para poder alternar el estado (Completada/Pendiente)
-  // TODO: Inyectar el <li> resultante en listaContenedor usando .appendChild()
+  tareasFiltradas.forEach(tarea => {
+    const li = document.createElement('li');
+    
+    // TODO: Configurar las clases CSS según la prioridad y el estado (completada)
+    li.classList.add('item-tarea', tarea.prioridad);
+    if (tarea.completada) {
+      li.classList.add("completada");
+    }
+
+	const span = document.createElement("span");
+	span.textContent = tarea.titulo + " (" + tarea.prioridad + ")";
+
+    // TODO: Añadir un botón dentro de cada <li> para poder alternar el estado (Completada/Pendiente)
+    const btnAccion = document.createElement('button');
+    btnAccion.textContent = tarea.completada ? 'Marcar Pendiente' : 'Completar';
+    
+    // Modificación directa (mutable) del objeto
+    btnAccion.addEventListener('click', () => {
+      tarea.completada = !tarea.completada;
+      pintarTareas(); // Volvemos a pintar para ver el cambio reflejado
+    });
+
+    li.appendChild(span);
+    li.appendChild(btnAccion);
+
+    // TODO: Inyectar el <li> resultante en listaContenedor usando .appendChild()
+    listaContenedor.appendChild(li);
+  });
 }
+
+// Inicializamos la app al cargar el script
+inicializarApp();
 
 // 5. MANEJO DE EVENTOS: Captura de formulario
 formulario.addEventListener('submit', (event) => {

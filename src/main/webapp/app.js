@@ -17,6 +17,7 @@ const loadingState = document.querySelector('#loading-state');
 const botonesFiltro = document.querySelectorAll('.btn-filtro');
 
 // 3. FUNCIÓN ASÍNCRONA (AJAX simulado): Debe ejecutarse al arrancar la web
+//EL ERROR ES POR LA VERSION Y DOMINIO DEL FRAMEWORK
 async function inicializarApp() {
   // TODO: Simular una espera de 1.5 segundos usando una Promesa (setTimeout)
   await new Promise(resolve => setTimeout(resolve, 1500));

@@ -50,8 +50,8 @@ function pintarTareas() {
       li.classList.add("completada");
     }
 
-	const span = document.createElement("span");
-	span.textContent = tarea.titulo + " (" + tarea.prioridad + ")";
+    const span = document.createElement("span");
+    span.textContent = tarea.titulo + " (" + tarea.prioridad + ")";
 
     // TODO: Añadir un botón dentro de cada <li> para poder alternar el estado (Completada/Pendiente)
     const btnAccion = document.createElement('button');
@@ -70,46 +70,49 @@ function pintarTareas() {
     listaContenedor.appendChild(li);
   });
 }
+
 // 5. MANEJO DE EVENTOS: Captura de formulario
 formulario.addEventListener('submit', (event) => {
   event.preventDefault();
-  
-  // 5. MANEJO DE EVENTOS: Captura de formulario
-  formulario.addEventListener('submit', (event) => {
-    event.preventDefault();
 
-    // TODO: Capturar los valores de los inputs de forma segura
-    const titulo = inputTitulo.value.trim();
-    const prioridad = selectPrioridad.value;
+  // Capturar los valores de los inputs de forma segura
+  const titulo = inputTitulo.value.trim();
+  const prioridad = selectPrioridad.value;
 
-    // Validación opcional por si el input está vacío
-    if (!titulo) return;
+  // Validación opcional por si el input está vacío
+  if (!titulo) return;
 
-    // TODO: Crear un nuevo objeto tarea inmutable con un id único (Date.now())
-    const nuevaTarea = {
-      id: Date.now(),
-      titulo: titulo,
-      prioridad: prioridad,
-      completada: false
-    };
+  // Crear un nuevo objeto tarea inmutable con un id único (Date.now())
+  const nuevaTarea = {
+    id: Date.now(),
+    titulo: titulo,
+    prioridad: prioridad,
+    completada: false
+  };
 
-    // TODO: Añadir el objeto al array global de tareas de forma inmutable (operador spread)
-    tareas = [...tareas, nuevaTarea];
+  // Añadir el objeto al array global de tareas de forma inmutable (operador spread)
+  tareas = [...tareas, nuevaTarea];
 
-    // TODO: Volver a invocar pintarTareas() y resetear el formulario
-    pintarTareas();
-    formulario.reset();
-  });
+  // Volver a invocar pintarTareas() y resetear el formulario
+  pintarTareas();
+  formulario.reset();
+});
 
 // 6. MANEJO DE EVENTOS: Captura de botones de filtrado
 botonesFiltro.forEach(boton => {
   boton.addEventListener('click', (event) => {
     // Quitar clase active al botón anterior y ponérsela al pulsado
-    document.querySelector('.btn-filtro.active').classList.remove('active');
+    const botonActivo = document.querySelector('.btn-filtro.active');
+    if (botonActivo) {
+      botonActivo.classList.remove('active');
+    }
     event.target.classList.add('active');
 
     // TODO: Actualizar la variable 'filtroActual' con el atributo 'data-filtro' del botón
+    filtroActual = event.target.getAttribute('data-filtro');
+
     // TODO: Invocar pintarTareas() para refrescar la pantalla
+    pintarTareas();
   });
 });
 
